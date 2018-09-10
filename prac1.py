@@ -2,14 +2,14 @@ import pandas as pd
 import tensorflow as tf
 import numpy as np
 
-df=pd.read_excel("../BigData-project/2017_price_stock.xlsx").ix[:,::-1]
+dfs=pd.read_excel("../BigData-project/2017_price_stock.xlsx").ix[:,::-1]
 df_test=pd.read_excel("../BigData-project/2018_price_stock.xlsx").ix[:,::-1]
 
 '''
 Simple Regression // price ~ stock
 '''
 #NA처리
-df=df.dropna()
+dfs=dfs.dropna()
 df_test=df_test.dropna()
 
 def MinMaxScaler(data):
@@ -18,8 +18,8 @@ def MinMaxScaler(data):
     # noise term prevents the zero division
     return numerator / (denominator + 1e-7)
 
-x_single_data=MinMaxScaler(np.array([df.ix[:,0].values]).T)
-y_data=MinMaxScaler(np.array([df.ix[:,-1].values]).T)
+x_single_data=MinMaxScaler(np.array([dfs.ix[:,0].values]).T)
+y_data=MinMaxScaler(np.array([dfs.ix[:,-1].values]).T)
 
 x_single_test=MinMaxScaler(np.array([df_test.ix[:,0].values]).T)
 y_test=MinMaxScaler(np.array([df_test.ix[:,-1].values]).T)
@@ -37,7 +37,7 @@ optimizer=tf.train.GradientDescentOptimizer(learning_rate=0.001).minimize(cost)
 with tf.Session() as sess:
     sess.run(tf.global_variables_initializer())
     
-    for step in range(50001):
+    for step in range(5001):
         cost_v, hx, _ = sess.run([cost, hypothesis, optimizer], 
                                  feed_dict={X:x_single_data, Y:y_data})
         if step%50==0:
