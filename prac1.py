@@ -8,6 +8,11 @@ df_test=pd.read_excel("../BigData-project/2018_price_stock.xlsx").ix[:,::-1]
 '''
 Simple Regression // price ~ stock
 '''
+
+'''
+정규화 + 일반화
+'''
+
 #NA처리
 dfs=dfs.dropna()
 df_test=df_test.dropna()
@@ -18,11 +23,17 @@ def MinMaxScaler(data):
     # noise term prevents the zero division
     return numerator / (denominator + 1e-7)
 
-x_single_data=MinMaxScaler(np.array([dfs.ix[:,0].values]).T)
-y_data=MinMaxScaler(np.array([dfs.ix[:,-1].values]).T)
+def standard(data):
+    return (data[:]-data.mean())/data[:].std()
 
-x_single_test=MinMaxScaler(np.array([df_test.ix[:,0].values]).T)
-y_test=MinMaxScaler(np.array([df_test.ix[:,-1].values]).T)
+x_single_data=standard(np.array([dfs.ix[:65,-1].values]).T)
+y_data=standard(np.array([dfs.ix[:65,-1].values]).T)
+
+x_single_tune= standard(np.array([dfs.ix[65:,0].values]).T)
+y_tune=standard(np.array([dfs.ix[65:,0].values]).T)
+
+x_single_test=standard(np.array([df_test.ix[:,0].values]).T)
+y_test=standard(np.array([df_test.ix[:,-1].values]).T)
 
 X=tf.placeholder(tf.float32, shape=[None, 1])
 Y=tf.placeholder(tf.float32, shape=[None, 1])
@@ -31,7 +42,9 @@ W=tf.Variable(tf.random_normal([1,1]), name='Weight')
 b=tf.Variable(tf.random_normal([1]), name='bias')
 hypothesis=tf.matmul(X, W)+b
 
-cost=tf.reduce_mean(tf.square(hypothesis-Y))
+l2reg=0.001*tf.reduce_sum(tf.square(W))
+
+cost=tf.reduce_mean(tf.square(hypothesis-Y))+l2reg
 optimizer=tf.train.GradientDescentOptimizer(learning_rate=0.001).minimize(cost)
 
 with tf.Session() as sess:
