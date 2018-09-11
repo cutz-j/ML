@@ -26,8 +26,8 @@ def MinMaxScaler(data):
 def standard(data):
     return (data[:]-data.mean())/data[:].std()
 
-x_single_data=standard(np.array([dfs.ix[:65,-1].values]).T)
-y_data=standard(np.array([dfs.ix[:65,-1].values]).T)
+x_single_data=standard(np.array([dfs.ix[:,-1].values]).T)
+y_data=standard(np.array([dfs.ix[:,-1].values]).T)
 
 x_single_tune= standard(np.array([dfs.ix[65:,0].values]).T)
 y_tune=standard(np.array([dfs.ix[65:,0].values]).T)
