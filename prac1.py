@@ -1,6 +1,7 @@
 import pandas as pd
 import tensorflow as tf
 import numpy as np
+import matplotlib.pyplot as plt
 
 dfs=pd.read_excel("../BigData-project/2017_price_stock.xlsx").ix[:,::-1]
 df_test=pd.read_excel("../BigData-project/2018_price_stock.xlsx").ix[:,::-1]
@@ -10,7 +11,8 @@ Simple Regression // price ~ stock
 '''
 
 '''
-정규화 + 일반화
+이상치 처리(noise)
+정규화 + 일반화 -> 학습+검정데이터 모두
 '''
 
 #NA처리
@@ -26,11 +28,11 @@ def MinMaxScaler(data):
 def standard(data):
     return (data[:]-data.mean())/data[:].std()
 
-x_single_data=standard(np.array([dfs.ix[:,-1].values]).T)
-y_data=standard(np.array([dfs.ix[:,-1].values]).T)
+x_single_data=MinMaxScaler(np.array([dfs.ix[:,-1].values]).T)
+y_data=MinMaxScaler(np.array([dfs.ix[:,-1].values]).T)
 
-x_single_tune= standard(np.array([dfs.ix[65:,0].values]).T)
-y_tune=standard(np.array([dfs.ix[65:,0].values]).T)
+x_single_tune= MinMaxScaler(np.array([dfs.ix[65:,0].values]).T)
+y_tune=MinMaxScaler(np.array([dfs.ix[65:,0].values]).T)
 
 x_single_test=standard(np.array([df_test.ix[:,0].values]).T)
 y_test=standard(np.array([df_test.ix[:,-1].values]).T)
@@ -50,7 +52,7 @@ optimizer=tf.train.GradientDescentOptimizer(learning_rate=0.001).minimize(cost)
 with tf.Session() as sess:
     sess.run(tf.global_variables_initializer())
     
-    for step in range(5001):
+    for step in range(501):
         cost_v, hx, _ = sess.run([cost, hypothesis, optimizer], 
                                  feed_dict={X:x_single_data, Y:y_data})
         if step%50==0:
