@@ -12,6 +12,7 @@ Simple Regression // price ~ stock
 
 '''
 이상치 처리(noise)
+정규성 검정
 정규화 + 일반화 -> 학습+검정데이터 모두
 '''
 
