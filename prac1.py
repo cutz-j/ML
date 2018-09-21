@@ -2,6 +2,9 @@ import pandas as pd
 import tensorflow as tf
 import numpy as np
 import matplotlib.pyplot as plt
+from scipy import stats as sps
+from sklearn import preprocessing as pp
+
 
 dfs=pd.read_excel("../BigData-project/2017_price_stock.xlsx").ix[:,::-1]
 df_test=pd.read_excel("../BigData-project/2018_price_stock.xlsx").ix[:,::-1]
@@ -15,10 +18,17 @@ Simple Regression // price ~ stock
 정규성 검정
 정규화 + 일반화 -> 학습+검정데이터 모두
 '''
-
-#NA처리
 dfs=dfs.dropna()
 df_test=df_test.dropna()
+
+rs=pp.RobustScaler()
+rs.fit(dfs, df_test)
+dfs_rs=rs.transform(dfs)
+df_test_rs=rs.transform(df_test)
+print(dfs_rs, df_test_rs)
+
+#NA처리
+
 
 def MinMaxScaler(data):
     numerator = data - np.min(data, 0)
