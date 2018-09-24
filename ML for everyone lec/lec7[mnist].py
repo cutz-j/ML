@@ -1,6 +1,9 @@
 import tensorflow as tf
 import random
 import matplotlib.pyplot as plt
+
+''' 93% '''
+
 tf.set_random_seed(777)  # for reproducibility
 
 from tensorflow.examples.tutorials.mnist import input_data
@@ -15,11 +18,22 @@ X = tf.placeholder(tf.float32, [None, 784])
 # 0 - 9 digits recognition = 10 classes
 Y = tf.placeholder(tf.float32, [None, nb_classes])
 
-W = tf.Variable(tf.random_normal([784, nb_classes]))
-b = tf.Variable(tf.random_normal([nb_classes]))
+W1 = tf.Variable(tf.random_normal([784, 30]))
+b1 = tf.Variable(tf.random_normal([30]))
+layer1 = tf.nn.softmax(tf.matmul(X, W1)+b1)
 
+W2 = tf.Variable(tf.random_normal([30, 30]))
+b2 = tf.Variable(tf.random_normal([30]))
+layer2 = tf.nn.softmax(tf.matmul(layer1, W2)+b2)
+
+W3 = tf.Variable(tf.random_normal([30, 30]))
+b3 = tf.Variable(tf.random_normal([30]))
+layer3 = tf.nn.softmax(tf.matmul(layer2, W3)+b3)
+
+W4 = tf.Variable(tf.random_normal([30, 10]))
+b4 = tf.Variable(tf.random_normal([10]))
 # Hypothesis (using softmax)
-hypothesis = tf.nn.softmax(tf.matmul(X, W) + b)
+hypothesis = tf.nn.softmax(tf.matmul(layer3, W4) + b4)
 
 cost = tf.reduce_mean(-tf.reduce_sum(Y * tf.log(hypothesis), axis=1))
 optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.1).minimize(cost)
@@ -30,7 +44,7 @@ is_correct = tf.equal(tf.arg_max(hypothesis, 1), tf.arg_max(Y, 1))
 accuracy = tf.reduce_mean(tf.cast(is_correct, tf.float32))
 
 # parameters
-training_epochs = 15
+training_epochs = 1000
 batch_size = 100
 
 with tf.Session() as sess:
@@ -57,13 +71,12 @@ with tf.Session() as sess:
           X: mnist.test.images, Y: mnist.test.labels}))
 
     # Get one and predict
-    r = random.randint(0, mnist.test.num_examples - 1)
-    print("Label: ", sess.run(tf.argmax(mnist.test.labels[r:r + 1], 1)))
-    print("Prediction: ", sess.run(
-        tf.argmax(hypothesis, 1), feed_dict={X: mnist.test.images[r:r + 1]}))
-
-    plt.imshow(
-        mnist.test.images[r:r + 1].reshape(28, 28),
-        cmap='Greys',
-        interpolation='nearest')
-    plt.show()
+    for i in range(50):
+        r = random.randint(0, mnist.test.num_examples - 1)
+        print("Label: ", sess.run(tf.argmax(mnist.test.labels[r:r + 1], 1)))
+        print("Prediction: ", sess.run(
+                tf.argmax(hypothesis, 1), feed_dict={X: mnist.test.images[r:r + 1]}))
+        
+        plt.imshow(
+                mnist.test.images[r:r + 1].reshape(28, 28), cmap='Greys', interpolation='nearest')
+        plt.show()
