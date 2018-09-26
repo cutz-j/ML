@@ -18,21 +18,21 @@ y_data = np.array(y_data, dtype=np.float32)
 X = tf.placeholder(tf.float32, [None, 2])
 Y = tf.placeholder(tf.float32, [None, 1])
 
-W1 = tf.Variable(tf.random_normal([2, 10]), name='weight1')
-b1 = tf.Variable(tf.random_normal([10]), name='bias1')
+W1 = tf.Variable(tf.random_normal([2, 2]), name='weight1')
+b1 = tf.Variable(tf.random_normal([2]), name='bias1')
 layer1 = tf.sigmoid(tf.matmul(X, W1) + b1)
 
-W2 = tf.Variable(tf.random_normal([10, 10]), name='weight2')
+W2 = tf.Variable(tf.random_normal([2, 1]), name='weight2')
 b2 = tf.Variable(tf.random_normal([1]), name='bias2')
-layer2 = tf.sigmoid(tf.matmul(layer1, W2) + b2)
-
-W2 = tf.Variable(tf.random_normal([10, 10]), name='weight3')
-b2 = tf.Variable(tf.random_normal([1]), name='bias3')
-layer3 = tf.sigmoid(tf.matmul(layer2, W2) + b2)
-
-W3 = tf.Variable(tf.random_normal([10, 1]), name='weight4')
-b3 = tf.Variable(tf.random_normal([1]), name='bias4')
-hypothesis = tf.sigmoid(tf.matmul(layer3, W3) + b3)
+#layer2 = tf.sigmoid(tf.matmul(layer1, W2) + b2)
+#
+#W2 = tf.Variable(tf.random_normal([10, 10]), name='weight3')
+#b2 = tf.Variable(tf.random_normal([1]), name='bias3')
+#layer3 = tf.sigmoid(tf.matmul(layer2, W2) + b2)
+#
+#W3 = tf.Variable(tf.random_normal([10, 1]), name='weight4')
+#b3 = tf.Variable(tf.random_normal([1]), name='bias4')
+hypothesis = tf.sigmoid(tf.matmul(layer1, W2) + b2)
 
 # cost/loss function
 cost = -tf.reduce_mean(Y * tf.log(hypothesis) + (1 - Y) *
