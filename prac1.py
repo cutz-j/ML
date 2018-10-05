@@ -38,7 +38,7 @@ def MinMaxScaler(data):
     return numerator / (denominator + 1e-7)
 
 def standard(data):
-    return (data[:]-data.mean())/data[:].std()
+    return (data[:]-data.mexan())/data[:].std()
 
 x_single_data=MinMaxScaler(np.array([dfs.ix[:,-1].values]).T)
 y_data=MinMaxScaler(np.array([dfs.ix[:,-1].values]).T)
