@@ -12,7 +12,7 @@ data = np.array(dataList, dtype=np.float32)
 m = len(data)
 memoryList = []
 
-# scaling
+# scaling & rollback
 def standard(x):
     global memoryList
     memoryList.append((np.mean(x), np.std(x)))
@@ -82,9 +82,8 @@ predict = [1, (1650.-memoryList[0][0])/memoryList[0][1], (3-memoryList[1][0])/me
 print(rollback(hypothesis(predict, W), 2))
 
 
-# Q3.3
+# Q3.3: normal Equation
 def normEqtn(X,y):
-    #restheta = np.zeros((X.shape[1],1))
     return np.dot(np.dot(np.linalg.inv(np.dot(X.T,X)),X.T),y)
 
 data = open("d:/data/ML/ex01/ex1data2.txt", encoding='utf-8')
