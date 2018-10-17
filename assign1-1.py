@@ -4,7 +4,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 ## Q1: eye matrix ##
-def eye(num):
+def eye(num): # numpy에서 함수 있음. np.eye()
+    '''
+    단위행렬(identity matrix)의 의미가 중요!
+    '''
     resList = []
     for i in range(num):
         tempList = []
@@ -15,7 +18,7 @@ def eye(num):
                 tempList.append(0)
         resList.append(tempList)
     return np.array(resList)
-#print(eye(5))
+eye(5)
 
 ## Q2: Linear regression with one variable ##
 data = open("d:/data/ML/ex01/ex1data1.txt", encoding='utf-8')
@@ -51,7 +54,7 @@ def cost(x, W, y):
 
 
 ## Q2.2.3: computing the cost J
-#print(cost(X, W, y)) # 32.07273422
+#print(cost(X, W, y)) # 32.07273422x
     
 def descent(x, W, y):
     costList = []
