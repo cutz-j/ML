@@ -1,8 +1,10 @@
-# lec4[Multiple feature Linear Regression]
-
+### tensorflow 활용 1-2 해결 ###
 import tensorflow as tf
+import numpy as np
+import pandas as pd
 
 # hypothesis
+all_data = pd.read_csv("d:/data/ex01/ex1data2.txt", encoding='utf-8', sep=',')
 x1_data = [73., 93., 89., 96., 73.]
 x2_data = [80., 88., 91., 98., 66.]
 x3_data = [75., 93., 90., 100., 70.]

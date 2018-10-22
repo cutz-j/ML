@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 ## Q3: Linear regression with multiple variable ##
-data = open("d:/data/ML/ex01/ex1data2.txt", encoding='utf-8')
+data = open("d:/data/ex01/ex1data2.txt", encoding='utf-8')
 dataList = []
 for i in data:
     dataList.append(i.strip('\n').split(','))
@@ -63,18 +63,18 @@ def descent(x, W, y):
     
 # reshape 제일 중요
 W, costList = descent(X, W, y)
-plt.plot(range(len(costList)), costList, 'o')
-plt.show()
+#plt.plot(range(len(costList)), costList, 'o')
+#plt.show()
 
 #X[:, 1] = rollback(X[:, 1], 0)
 #X[:, 2] = rollback(X[:, 1], 1)
 #y = rollback(y, 2)
 
-#plt.plot(X[:,1:], y, 'rx', markersize=10)
-#plt.grid(True)
-#plt.plot(X[:,1:], hypothesis(X, W))
-#plt.show()
-#    
+plt.plot(X[:,1:], y, 'rx', markersize=10)
+plt.grid(True)
+plt.plot(X[:,1], hypothesis(X, W), 'b-')
+plt.show()
+    
 
 # predict
 predict = [1, (1650.-memoryList[0][0])/memoryList[0][1], (3-memoryList[1][0])/memoryList[1][1]]
