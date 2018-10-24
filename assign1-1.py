@@ -86,7 +86,7 @@ predict1 = hypothesis([1, 3.5], W)
 predict2 = hypothesis([1, 7], W)
 print(predict1, predict2)
 
-    
+
     
     
     
