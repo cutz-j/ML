@@ -35,6 +35,7 @@ def mapFeature(x1, x2):
             term  = (term1 * term2).reshape( term1.shape[0], 1 ) 
             out   = np.hstack(( out, term ))
     return out
+
 map_X = mapFeature(X[:,1], X[:,2]) # shape(118, 28)
 
 ## 2.3 Cost function and gradient ##

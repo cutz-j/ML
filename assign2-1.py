@@ -13,7 +13,7 @@ y = y.reshape(m, 1)
 X = np.insert(np.array(X), 0, 1, axis=1) # (100, 3)
 initial_theta = np.zeros((X.shape[1],1)) # (3,1)
 iteration = 1000
-#learning_rate = 0.00003
+learning_rate = 0.00003
 
 ## 1.1 Visualizing the data ##
 admit = all_data.iloc[:,:2][all_data[2]==1]
