@@ -13,7 +13,7 @@ y = y.reshape(m, 1)
 X = np.insert(np.array(X), 0, 1, axis=1) # (100, 3)
 initial_theta = np.zeros((X.shape[1],1)) # (3,1)
 iteration = 1000
-learning_rate = 0.00003
+learning_rate = 0.0000003
 
 ## 1.1 Visualizing the data ##
 admit = all_data.iloc[:,:2][all_data[2]==1]
@@ -50,21 +50,20 @@ def gradientDescent(theta, X, y, mLambda=0): # all-batch 학습
     for i in range(iteration):
         costList.append(cost(theta, X, y, mLambda))
         thetaList.append(theta)
-        theta_tmp[0] = (1 / m) * np.sum(np.dot((hypothesis(theta, X) - y).T, X[:, 0].reshape(m, 1)))
+        if i % 100 == 0:
+            print(cost(theta, X, y, mLambda))
+        theta_tmp[0] = theta[0] - (1 / m) * np.sum(np.dot((hypothesis(theta, X) - y).T, X[:, 0].reshape(m, 1)))
         for j in range(1, len(theta_tmp)): # len(theta_tmp) ==  n; feature 개수
-            theta_tmp[j] = (1 / m) * np.sum(np.dot((hypothesis(theta, X) - y).T, X[:, j].reshape(m, 1))) + (mLambda / m) * theta[j]
+            theta_tmp[j] = theta[j] - (1 / m) * np.sum(np.dot((hypothesis(theta, X) - y).T, X[:, j].reshape(m, 1))) + (mLambda / m) * theta[j]
         theta = theta_tmp.copy()
     return theta, costList
 
-def optimizeTheta(theta,X,y,mlambda=0.):
-    result = optimize.fmin(cost, x0=theta, args=(X, y, mlambda), maxiter=400, full_output=True)
-    return result[0], result[1]
-theta, mincost = optimizeTheta(initial_theta,X,y)
-print(theta, mincost)
+#theta, mincost = gradientDescent(initial_theta,X,y)
+#print(theta, mincost)
 
-#initial_theta = np.zeros((X.shape[1], 1), dtype=np.float32)
-#theta, costList = gradientDescent(initial_theta, X, y, mLambda=0)
-#print(theta, costList[-1])
+initial_theta = np.zeros((X.shape[1], 1), dtype=np.float32)
+theta, costList = gradientDescent(initial_theta, X, y, mLambda=0)
+print(theta, costList[-1])
 
 ## 1.2.3 Decision boundary ##
 boundary_xs = np.array([np.min(X[:,1]), np.max(X[:,1])])

@@ -45,7 +45,7 @@ def displayData(indices_to_display = None):
     img = scipy.misc.toimage( big_picture )
     plt.imshow(img,cmap = cm.Greys_r)
     
-#displayData()   
+displayData()
 
 ## 1.3 Vectorizing Logistic Regression ##
 
