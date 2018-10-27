@@ -11,9 +11,9 @@ y = np.array(all_data[2])                # (100, 1)
 m = y.size # 100
 y = y.reshape(m, 1)
 X = np.insert(np.array(X), 0, 1, axis=1) # (100, 3)
-initial_theta = np.zeros((X.shape[1],1)) # (3,1)
-iteration = 1000
-learning_rate = 0.0000003
+initial_theta = np.random.normal(size=(X.shape[1],1)) # (3,1)
+iteration = 3000
+learning_rate = 0.001615
 
 ## 1.1 Visualizing the data ##
 admit = all_data.iloc[:,:2][all_data[2]==1]
@@ -37,10 +37,10 @@ def hypothesis(theta, X):
 
 def cost(theta, X, y, mLambda=0.):
     global m
-    zero = np.dot((-y).T, np.log(hypothesis(theta, X)))
+    zero = np.dot((y).T, np.log(hypothesis(theta, X)))
     one = np.dot((1 - y).T, np.log(1 - hypothesis(theta, X)))
     reg = (mLambda/(2*m)) * np.sum(np.dot(theta[1:].T, theta[1:]))
-    return (1 / m) * (np.sum(zero - one)) + reg
+    return -(1 / m) * (np.sum(zero + one)) + reg
 
 def gradientDescent(theta, X, y, mLambda=0): # all-batch 학습
     global m, iteration, learning_rate
@@ -52,10 +52,11 @@ def gradientDescent(theta, X, y, mLambda=0): # all-batch 학습
         thetaList.append(theta)
         if i % 100 == 0:
             print(cost(theta, X, y, mLambda))
-        theta_tmp[0] = theta[0] - (1 / m) * np.sum(np.dot((hypothesis(theta, X) - y).T, X[:, 0].reshape(m, 1)))
+        theta_tmp[0] = theta[0] - ((learning_rate / m) * np.sum(np.dot((hypothesis(theta, X) - y).T, X[:, 0].reshape(m, 1))))
         for j in range(1, len(theta_tmp)): # len(theta_tmp) ==  n; feature 개수
-            theta_tmp[j] = theta[j] - (1 / m) * np.sum(np.dot((hypothesis(theta, X) - y).T, X[:, j].reshape(m, 1))) + (mLambda / m) * theta[j]
+            theta_tmp[j] = theta[j] - ((learning_rate / m) * np.sum(np.dot((hypothesis(theta, X) - y).T, X[:, j].reshape(m, 1))) + (mLambda / m) * theta[j])
         theta = theta_tmp.copy()
+#        print(theta)
     return theta, costList
 
 #theta, mincost = gradientDescent(initial_theta,X,y)
