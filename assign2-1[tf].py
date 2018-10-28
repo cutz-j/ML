@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import tensorflow as tf
 import sklearn.preprocessing as pp
 
+tf.set_random_seed(777)
 
 ## 변수 선언 ##
 all_data = pd.read_csv("d:/data/ex02/ex2data1.txt", sep=',', header=None)
@@ -13,8 +14,8 @@ y_data = np.array(all_data[2])   # (100, 1)
 m = y_data.size # 100
 y_data = y_data.reshape(m, 1)
 
-iteration = 1000
-learning_rate = 0.0001
+iteration = 5000
+learning_rate = 0.03
 
 ## 1.1 Visualizing the data ##
 admit = all_data.iloc[:,:2][all_data[2]==1]
@@ -36,14 +37,18 @@ y = tf.placeholder(dtype=tf.float32, shape=[None, 1])
 
 #W = tf.Variable(tf.random_normal([2, 1]), name='weight')
 #b = tf.Variable(tf.random_normal([1], name='bias'))
-W = tf.Variable(tf.zeros([2,1]), name='weight')
-b = tf.Variable(tf.zeros([1]), name='bias')
-hypothesis = tf.nn.sigmoid(tf.matmul(X, W) + b)
+W = tf.Variable(tf.random_uniform([2,2], 1, 11), name='weight')
+b = tf.Variable(tf.random_uniform([2], 1, 10), name='bias')
+layer1 = tf.nn.sigmoid(tf.matmul(X, W) + b)
+
+W2 = tf.Variable(tf.random_uniform([2,1], -1, 1), name='weight2')
+b2 = tf.Variable(tf.random_uniform([1], -1, 1), name='bias2')
+hypothesis = tf.nn.sigmoid(tf.matmul(layer1, W) + b)
 
 
 ## 1.2.2 Cost function and gradient ##
-cost = -tf.reduce_mean(tf.transpose(y) * tf.log(hypothesis) + tf.transpose(1 - y) * tf.log(1 - hypothesis))
-train = tf.train.GradientDescentOptimizer(learning_rate=learning_rate).minimize(cost)
+cost = - tf.reduce_mean(y * tf.log(hypothesis) + (1 - y) * tf.log(1 - hypothesis))
+train = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(cost)
 
 sess = tf.Session()
 sess.run(tf.global_variables_initializer())
@@ -51,10 +56,10 @@ cost_val, _ = sess.run([cost, train], feed_dict={X: x_data, y: y_data})
 print(cost_val) # 0.6931583
 
 ## 1.2.3 Learning parameters ##
-for i in range(4000):
+for i in range(iteration):
     y_hat, cost_val, _, w_val, b_val = sess.run([hypothesis, cost, train, W, b], feed_dict={X: x_data, y: y_data})
     if i % 50 == 0:
-        print(cost_val)
+        print(cost_val, w_val, b_val)
 
 predict = sess.run(hypothesis, feed_dict={X: [[45., 85.]]})
 print(predict) # 0.59%
