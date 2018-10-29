@@ -15,7 +15,10 @@ m = y_data.size # 100
 y_data = y_data.reshape(m, 1)
 
 iteration = 5000
-learning_rate = 0.03
+learning_rate = 0.02
+
+scale = pp.StandardScaler()
+x_scale = scale.fit_transform(x_data)
 
 ## 1.1 Visualizing the data ##
 admit = all_data.iloc[:,:2][all_data[2]==1]
@@ -37,13 +40,10 @@ y = tf.placeholder(dtype=tf.float32, shape=[None, 1])
 
 #W = tf.Variable(tf.random_normal([2, 1]), name='weight')
 #b = tf.Variable(tf.random_normal([1], name='bias'))
-W = tf.Variable(tf.random_uniform([2,2], 1, 11), name='weight')
-b = tf.Variable(tf.random_uniform([2], 1, 10), name='bias')
-layer1 = tf.nn.sigmoid(tf.matmul(X, W) + b)
 
-W2 = tf.Variable(tf.random_uniform([2,1], -1, 1), name='weight2')
-b2 = tf.Variable(tf.random_uniform([1], -1, 1), name='bias2')
-hypothesis = tf.nn.sigmoid(tf.matmul(layer1, W) + b)
+W = tf.Variable(tf.random_normal([2,1]), name='weight2')
+b = tf.Variable(tf.random_normal([1]), name='bias2')
+hypothesis = tf.nn.sigmoid(tf.matmul(X, W) + b)
 
 
 ## 1.2.2 Cost function and gradient ##
@@ -52,16 +52,16 @@ train = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(cost)
 
 sess = tf.Session()
 sess.run(tf.global_variables_initializer())
-cost_val, _ = sess.run([cost, train], feed_dict={X: x_data, y: y_data})
+cost_val, _ = sess.run([cost, train], feed_dict={X: x_scale, y: y_data})
 print(cost_val) # 0.6931583
 
 ## 1.2.3 Learning parameters ##
 for i in range(iteration):
-    y_hat, cost_val, _, w_val, b_val = sess.run([hypothesis, cost, train, W, b], feed_dict={X: x_data, y: y_data})
-    if i % 50 == 0:
-        print(cost_val, w_val, b_val)
+    y_hat, cost_val, _, w_val, b_val = sess.run([hypothesis, cost, train, W, b], feed_dict={X: x_scale, y: y_data})
+    if i % 100 == 0:
+        print("cost: ", cost_val,"\nw: ", w_val,"\nv_val: ", b_val)
 
-predict = sess.run(hypothesis, feed_dict={X: [[45., 85.]]})
+predict = sess.run(hypothesis, feed_dict={X: scale.transform([[45., 75.,]])})
 print(predict) # 0.59%
 
 ## 1.2.3 Decision boundary ##
