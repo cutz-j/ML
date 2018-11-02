@@ -65,11 +65,3 @@ for i in range(10):
     plt.imshow(mnist.test.images[r:r + 1].reshape(28, 28), cmap='Greys', interpolation='nearest')
     plt.show()
 print("Accuracy: ", accuracy.eval(session=sess, feed_dict={X: mnist.test.images, Y: mnist.test.labels}))
-
-
-
-
-
-
-
-

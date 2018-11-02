@@ -41,25 +41,22 @@ y = tf.placeholder(dtype=tf.float32, shape=[None, 1])
 #W = tf.Variable(tf.random_normal([2, 1]), name='weight')
 #b = tf.Variable(tf.random_normal([1], name='bias'))
 
-W = tf.Variable(tf.random_normal([2,1]), name='weight2')
-b = tf.Variable(tf.random_normal([1]), name='bias2')
+init = tf.contrib.layers.xavier_initializer(seed=77)
+W = tf.Variable(init(shape=[2,1]))
+b = tf.Variable(init(shape=[1]))
 hypothesis = tf.nn.sigmoid(tf.matmul(X, W) + b)
 
-
 ## 1.2.2 Cost function and gradient ##
-cost = - tf.reduce_mean(y * tf.log(hypothesis) + (1 - y) * tf.log(1 - hypothesis))
+cost = -tf.reduce_mean(y * tf.log(hypothesis) + (1 - y) * tf.log(1 - hypothesis))
 train = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(cost)
-
 sess = tf.Session()
 sess.run(tf.global_variables_initializer())
-cost_val, _ = sess.run([cost, train], feed_dict={X: x_scale, y: y_data})
-print(cost_val) # 0.6931583
 
 ## 1.2.3 Learning parameters ##
 for i in range(iteration):
     y_hat, cost_val, _, w_val, b_val = sess.run([hypothesis, cost, train, W, b], feed_dict={X: x_scale, y: y_data})
     if i % 100 == 0:
-        print("cost: ", cost_val,"\nw: ", w_val,"\nv_val: ", b_val)
+        print("cost: ", cost_val)
 
 predict = sess.run(hypothesis, feed_dict={X: scale.transform([[45., 75.,]])})
 print(predict) # 0.59%
