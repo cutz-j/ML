@@ -48,7 +48,6 @@ def displayData(indices_to_display = None):
 displayData()
 
 ## 1.3 Vectorizing Logistic Regression ##
-
 X = tf.placeholder(dtype=tf.float32, shape=[5000, 400])
 Y = tf.placeholder(dtype=tf.float32, shape=[5000, 1]) # not one-hot --> 1~10
 Y_one_hot = tf.one_hot(y_data, 10, dtype=tf.float32) # one hot method
@@ -58,7 +57,6 @@ b = tf.Variable(tf.random_normal([10]), name='bias')
 ld = 0.001 # L2 Reg 람다 값
 
 # 1.3.2 Vectorizing the gradient #
-
 logit = tf.matmul(X, W) + b
 hypothesis = tf.nn.softmax(logit)
 cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=logit, labels=Y_one_hot))
