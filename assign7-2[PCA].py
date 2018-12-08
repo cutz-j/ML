@@ -10,7 +10,7 @@ import matplotlib.cm as cm
 import scipy
 
 ## 2.1 Example Dataset ##
-data1 = io.loadmat("d:/data/ex7/ex7data1.mat")
+data1 = io.loadmat("c:/data/ex7/ex7data1.mat")
 X = data1['X'] # shape(50, 2)
 #plt.figure()
 #plt.plot(X[:,0], X[:,1], 'bo')
@@ -60,7 +60,7 @@ x_recover = recover(z, U, K)
 #print(x_recover[0])  # [-1.05805279, -1.05805279]
 
 ## 2.4 Face Image Dataset ##
-face = io.loadmat("d:/data/ex7/ex7faces.mat")
+face = io.loadmat("c:/data/ex7/ex7faces.mat")
 X = face['X'] # shape(5000, 1024)
 #plt.imshow(X)
 def getDatumImg(row):

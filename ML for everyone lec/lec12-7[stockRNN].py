@@ -21,7 +21,7 @@ keep_prob = tf.placeholder(dtype=tf.float32)
 l2norm = 0.0001
 
 ### 데이터 전처리 ###
-stock_data = np.loadtxt("d:/data/prac/stock_daily.csv", delimiter=',', skiprows=1)
+stock_data = np.loadtxt("c:/data/prac/stock_daily.csv", delimiter=',', skiprows=1)
 stock_data = stock_data[::-1] # shape (732, 5)
 
 # train scaling #
