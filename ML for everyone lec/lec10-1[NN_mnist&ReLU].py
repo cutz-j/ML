@@ -21,7 +21,7 @@ Y = tf.placeholder(tf.float32, [None, 10])
 
 # weights
 W1 = tf.Variable(tf.random_normal([784, 256]))
-b1 = tf.Variable(tf.random_normal([256]))
+b1 = tfㅊ.Variable(tf.random_normal([256]))
 L1 = tf.nn.relu(tf.matmul(X, W1) + b1)
 
 W2 = tf.Variable(tf.random_normal([256, 256]))
